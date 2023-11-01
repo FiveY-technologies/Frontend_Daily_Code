@@ -6,9 +6,9 @@ const DataDisplay = ({ data }) => {
   }
 
   return (
-    <div >
+    <div>
       
-      <table className="table">
+      <table className="table-responsive">
         <thead>
           <tr>
             {Object.keys(data[0]).map((key) => (
