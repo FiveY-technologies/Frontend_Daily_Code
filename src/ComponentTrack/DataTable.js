@@ -6,9 +6,9 @@ const DataDisplay = ({ data }) => {
   }
 
   return (
-    <div className="container-Fluid">
+    <div >
       
-      <table>
+      <table className="table">
         <thead>
           <tr>
             {Object.keys(data[0]).map((key) => (
