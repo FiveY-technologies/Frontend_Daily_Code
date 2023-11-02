@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logoImage from '../Assets/5y tech.PNG'
+import logoImage from '../Assets/5y_Logo.jpeg'
 import MapComponent from './Display';
 
 import FuelDataTable from './fueldatatable';

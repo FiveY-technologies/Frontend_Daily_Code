@@ -6,7 +6,7 @@ const DataDisplay = ({ data }) => {
   }
 
   return (
-    <div >
+    <div>
       
       <table className="table">
         <thead>
