@@ -9,18 +9,19 @@ const FuelDataTable = () => {
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
   const [showCurrentTable, setShowCurrentTable] = useState(true); // New state variable
+  const cellClassName = 'border border-black h-16 text-xs overflow-hidden'
 
-  const head = [
+  const head = ["Id","Time",
     "Organization Name", "Vehicle Name", "Vehicle Mode", "Vehicle Model","Currentday Fuel Cost","Consumed Fuel Cost", "Sensor", "Start Fuel", "End Fuel", "Fuel Filling", "Fuel Theft", "Fuel Consumption", "Start KMS", "End KMS", "Distance Travelled", "KMPL", "Running Hours", "Engine ON Hours", "Second Engine ON Hours","Engine Idle Hours", "Liters Per Hours", "Start Location", "End Location", "Driver Name", "Driver Mobile Number", "Remark"
   ];
 
-  const historyHead = ["Id","Time","Latitude","Longitude"]
+ 
 
   
 
   useEffect(() => {
     // Fetch current data when the component mounts
-    axios.get('http://107.23.187.126:3000/fuelData')
+    axios.get('http://localhost:3000/alldatas')
       .then((response) => {
         setData(response.data);
         console.log(response.data);
@@ -37,7 +38,7 @@ const FuelDataTable = () => {
     console.log(toDateStr);
   
     // Fetch historical data when the "Submit" button is clicked
-    axios.get(`http://localhost:3000/direction/history?fromDate=${fromDateStr}&toDate=${toDateStr}`)
+    axios.get(`http://localhost:3000/alldatas/history?fromDate=${fromDateStr}&toDate=${toDateStr}`)
       .then((response) => {
         setHistory(response.data);
         setShowCurrentTable(false); // Hide the current table
@@ -58,7 +59,7 @@ const FuelDataTable = () => {
                         {head.map((heading, index) => (
                             <th
                                 key={index}
-                                className="px-6 py-3 bg-sky-950 text-center text-white border text-xs font-semibold text-black-700 uppercase tracking-wider "
+                                className="px-6 py-3 bg-sky-950 text-center h-16 text-white border text-xs font-semibold text-black-700 uppercase tracking-wider "
                             >
                                 {heading}
                             </th>
@@ -68,32 +69,34 @@ const FuelDataTable = () => {
         <tbody >
           {data.map((item , rowIndex) => (
             <tr key={rowIndex} className={`${rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-200'} text-center cursor-pointer`}>
-                  <td className='border border-black  '>{item.organization_name}</td>
-                  <td className='border border-black  '>{item.vehicle_name}</td>
-                  <td className='border border-black  '>{item.vehicle_mode}</td>
-                  <td className='border border-black  '>{item.vehicle_model}</td>
-                  <td className='border border-black  '>{item.current_day_fuel_cost}</td>
-                  <td className='border border-black  '>{item.consumed_fuel_cost}</td>
-                  <td className='border border-black  '>{item.sensor}</td>
-                  <td className='border border-black  '>{item.start_fuel}</td>
-                  <td className='border border-black  '>{item.end_fuel}</td>
-                  <td className='border border-black  '>{item.fuel_filling}</td>
-                  <td className='border border-black  '>{item.fuel_theft}</td>
-                  <td className='border border-black  '>{item.fuel_consumption}</td>
-                  <td className='border border-black  '>{item.start_kms}</td>
-                  <td className='border border-black  '>{item.end_kms}</td>
-                  <td className='border border-black  '>{item.distance_travelled}</td>
-                  <td className='border border-black  '>{item.kmpl}</td>
-                  <td className='border border-black  '>{item.running_hours}</td>
-                  <td className='border border-black  '>{item.engine_on_hours}</td>
-                  <td className='border border-black  '>{item.secondary_engine_hours}</td>
-                  <td className='border border-black  '>{item.engine_idle_hours}</td>
-                  <td className='border border-black  '>{item.liters_per_hour}</td>
-                  <td className='border border-black  '>{item.start_location}</td>
-                  <td className='border border-black  '>{item.end_location}</td>
-                  <td className='border border-black  '>{item.driver_name}</td>
-                  <td className='border border-black  '>{item.driver_mobile_number}</td>
-                  <td className='border border-black  '>{item.remarks}</td>
+                   <td className={`${cellClassName}`}>{item.id}</td>
+                   <td className={`${cellClassName}`}>{item.time}</td>
+                  <td className={`${cellClassName}`}>{item.orgId}</td>
+                  <td className={`${cellClassName}`}>{item.shortName}</td>
+                  <td className={`${cellClassName}`}>{item.vehicleMode}</td>
+                  <td className={`${cellClassName}`}>{item.vehicleModel}</td>
+                  <td className={`${cellClassName}`}>100</td>
+                  <td className={`${cellClassName}`}>100</td>
+                  <td className={`${cellClassName}`}>{item.sensor}</td>
+                  <td className={`${cellClassName}`}>{item.fuelLitre}</td>
+                  <td className={`${cellClassName}`}>{item.end_fuel}</td>
+                  <td className={`${cellClassName}`}>{item.fuel_filling}</td>
+                  <td className={`${cellClassName}`}>{item.fuel_theft}</td>
+                  <td className={`${cellClassName}`}>{item.fuel_consumption}</td>
+                  <td className={`${cellClassName}`}>{item.odoDistance}</td>
+                  <td className={`${cellClassName}`}>{item.end_kms}</td>
+                  <td className={`${cellClassName}`}>{item.distance_travelled}</td>
+                  <td className={`${cellClassName}`}>{item.kmpl}</td>
+                  <td className={`${cellClassName}`}>{item.todayWorkingHours}</td>
+                  <td className={`${cellClassName}`}>{item.todayWorkingHours}</td>
+                  <td className={`${cellClassName}`}>{item.secondaryEngineHours}</td>
+                  <td className={`${cellClassName}`}>{item.idleTime}</td>
+                  <td className={`${cellClassName}`}>{item.liters_per_hour}</td>
+                  <td className={`${cellClassName}`}>{item.address}</td>
+                  <td className={`${cellClassName}`}>{item.end_location}</td>
+                  <td className={`${cellClassName}`}>{item.driverName}</td>
+                  <td className={`${cellClassName}`}>{item.driverMobile}</td>
+                  <td className={`${cellClassName}`}>{item.remarks}</td>
             </tr>
           ))}
         </tbody>
@@ -105,7 +108,7 @@ const FuelDataTable = () => {
         <table  className='border-2 border-black'>
         <thead>
         <tr>
-                        {historyHead.map((heading, index) => (
+                        {head.map((heading, index) => (
                             <th
                                 key={index}
                                 className="px-6 py-3 bg-sky-950 text-center text-white text-xs border font-semibold text-black-700 uppercase tracking-wider "
@@ -118,10 +121,34 @@ const FuelDataTable = () => {
         <tbody className='text-center'>
           {history.map((item , rowIndex) => (
             <tr key={rowIndex} className={`${rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-200'}  cursor-pointer`}>
-               <td className='border border-black  '>{item.Id}</td>
-               <td className='border border-black  '>{item.change_time}</td>
-               <td className='border border-black  '>{item.dir_latitude}</td>
-               <td className='border border-black  '>{item.dir_longitude}</td>
+               <td className={`${cellClassName}`}>{item.id}</td>
+                   <td className={`${cellClassName}`}>{item.time}</td>
+                  <td className={`${cellClassName}`}>{item.orgId}</td>
+                  <td className={`${cellClassName}`}>{item.shortName}</td>
+                  <td className={`${cellClassName}`}>{item.vehicleMode}</td>
+                  <td className={`${cellClassName}`}>{item.vehicleModel}</td>
+                  <td className={`${cellClassName}`}>100</td>
+                  <td className={`${cellClassName}`}>100</td>
+                  <td className={`${cellClassName}`}>{item.sensor}</td>
+                  <td className={`${cellClassName}`}>{item.fuelLitre}</td>
+                  <td className={`${cellClassName}`}>{item.end_fuel}</td>
+                  <td className={`${cellClassName}`}>{item.fuel_filling}</td>
+                  <td className={`${cellClassName}`}>{item.fuel_theft}</td>
+                  <td className={`${cellClassName}`}>{item.fuel_consumption}</td>
+                  <td className={`${cellClassName}`}>{item.odoDistance}</td>
+                  <td className={`${cellClassName}`}>{item.end_kms}</td>
+                  <td className={`${cellClassName}`}>{item.distance_travelled}</td>
+                  <td className={`${cellClassName}`}>{item.kmpl}</td>
+                  <td className={`${cellClassName}`}>{item.todayWorkingHours}</td>
+                  <td className={`${cellClassName}`}>{item.todayWorkingHours}</td>
+                  <td className={`${cellClassName}`}>{item.secondaryEngineHours}</td>
+                  <td className={`${cellClassName}`}>{item.idleTime}</td>
+                  <td className={`${cellClassName}`}>{item.liters_per_hour}</td>
+                  <td className={`${cellClassName}`}>{item.address}</td>
+                  <td className={`${cellClassName}`}>{item.end_location}</td>
+                  <td className={`${cellClassName}`}>{item.driverName}</td>
+                  <td className={`${cellClassName}`}>{item.driverMobile}</td>
+                  <td className={`${cellClassName}`}>{item.remarks}</td>
                
             </tr>
           ))}
@@ -133,7 +160,7 @@ const FuelDataTable = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex mt-4 justify-end space-x-4">
+      <div className="flex  justify-end space-x-4">
         <div>
           <DatePicker
             selected={fromDate}
