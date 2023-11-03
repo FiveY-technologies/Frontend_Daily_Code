@@ -11,17 +11,15 @@ const FuelDataTable = () => {
   const [showCurrentTable, setShowCurrentTable] = useState(true); // New state variable
   const cellClassName = 'border border-black h-16 text-xs overflow-hidden'
 
-  const head = ["Id","Time",
+  const head = ["Id","Date","Time",
     "Organization Name", "Vehicle Name", "Vehicle Mode", "Vehicle Model","Currentday Fuel Cost","Consumed Fuel Cost", "Sensor", "Start Fuel", "End Fuel", "Fuel Filling", "Fuel Theft", "Fuel Consumption", "Start KMS", "End KMS", "Distance Travelled", "KMPL", "Running Hours", "Engine ON Hours", "Second Engine ON Hours","Engine Idle Hours", "Liters Per Hours", "Start Location", "End Location", "Driver Name", "Driver Mobile Number", "Remark"
   ];
 
  
 
   
-
-  useEffect(() => {
-    // Fetch current data when the component mounts
-    axios.get('http://localhost:3000/alldatas')
+  const fetchData = () => {
+    axios.get('http://107.23.187.126:3000/alldatas')
       .then((response) => {
         setData(response.data);
         console.log(response.data);
@@ -29,6 +27,10 @@ const FuelDataTable = () => {
       .catch((error) => {
         console.error('Error fetching data: ' + error);
       });
+  };
+  useEffect(() => {
+    // Fetch the initial data when the component mounts
+    fetchData();
   }, []);
 
   const fetchDataFromHistory = () => {
@@ -38,7 +40,7 @@ const FuelDataTable = () => {
     console.log(toDateStr);
   
     // Fetch historical data when the "Submit" button is clicked
-    axios.get(`http://localhost:3000/alldatas/history?fromDate=${fromDateStr}&toDate=${toDateStr}`)
+    axios.get(`http://107.23.187.126:3000/alldatas/history?fromDate=${fromDateStr}&toDate=${toDateStr}`)
       .then((response) => {
         setHistory(response.data);
         setShowCurrentTable(false); // Hide the current table
@@ -70,7 +72,8 @@ const FuelDataTable = () => {
           {data.map((item , rowIndex) => (
             <tr key={rowIndex} className={`${rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-200'} text-center cursor-pointer`}>
                    <td className={`${cellClassName}`}>{item.id}</td>
-                   <td className={`${cellClassName}`}>{item.time}</td>
+                   <td className={`${cellClassName}`}>{item.time.substring(0, 10)}</td>
+                   <td className={`${cellClassName}`}>{item.time.substring(11, 19)}</td>
                   <td className={`${cellClassName}`}>{item.orgId}</td>
                   <td className={`${cellClassName}`}>{item.shortName}</td>
                   <td className={`${cellClassName}`}>{item.vehicleMode}</td>
@@ -122,7 +125,8 @@ const FuelDataTable = () => {
           {history.map((item , rowIndex) => (
             <tr key={rowIndex} className={`${rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-200'}  cursor-pointer`}>
                <td className={`${cellClassName}`}>{item.id}</td>
-                   <td className={`${cellClassName}`}>{item.time}</td>
+               <td className={`${cellClassName}`}>{item.time.substring(0, 10)}</td>
+               <td className={`${cellClassName}`}>{item.time.substring(11, 19)}</td>
                   <td className={`${cellClassName}`}>{item.orgId}</td>
                   <td className={`${cellClassName}`}>{item.shortName}</td>
                   <td className={`${cellClassName}`}>{item.vehicleMode}</td>
@@ -161,6 +165,14 @@ const FuelDataTable = () => {
   return (
     <div className="space-y-6">
       <div className="flex  justify-end space-x-4">
+      <div>
+          <button
+            onClick={fetchData}
+            className="bg-sky-900 hover:bg-sky-950 text-white font-bold py-2 px-4 rounded"
+          >
+            Refresh
+          </button>
+        </div>
         <div>
           <DatePicker
             selected={fromDate}

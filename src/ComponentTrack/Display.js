@@ -9,7 +9,7 @@ const MapComponent = () => {
 
   const fetchDirectionData = async () => {
     try {
-      const response = await axios.get("http://107.23.187.126:3000/direction");
+      const response = await axios.get("http://107.23.187.126:3000/");
       setDirectionData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
